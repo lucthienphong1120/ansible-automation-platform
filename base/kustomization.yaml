@@ -10,8 +10,8 @@ secretGenerator:
   - name: awx-secret-tls
     type: kubernetes.io/tls
     files:
-      - cert.pem
-      - private.key
+      - tls.crt=cert.pem
+      - tls.key=private.key
 
   - name: awx-postgres-configuration
     type: Opaque
