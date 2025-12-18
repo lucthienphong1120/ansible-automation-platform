@@ -157,9 +157,9 @@ To monitor the progress of the deployment, check the logs of `deployments/awx-op
 kubectl -n awx logs -f deployments/awx-operator-controller-manager
 ```
 
-If the deployment completes successfully, the logs end with:
+The deployment takes about 15 minutes. After it completes successfully, the logs end with:
 
-```txt
+```bash
 $ kubectl -n awx logs -f deployments/awx-operator-controller-manager
 ...
 ----- Ansible Task Status Event StdOut (awx.ansible.com/v1beta1, Kind=AWX, awx/awx) -----
