@@ -171,9 +171,7 @@ The required objects should now have been deployed next to AWX Operator in the `
 
 <!-- shell: instance: get resources -->
 ```bash
-$ kubectl -n awx get awx,all,ingress,secrets
-NAME                      AGE
-awx.awx.ansible.com/awx   6m48s
+$ kubectl -n awx get all
 
 NAME                                                  READY   STATUS      RESTARTS   AGE
 pod/awx-operator-controller-manager-59b86c6fb-4zz9r   2/2     Running     0          7m22s
@@ -202,20 +200,6 @@ statefulset.apps/awx-postgres-15   1/1     6m33s
 
 NAME                             COMPLETIONS   DURATION   AGE
 job.batch/awx-migration-24.6.1   1/1           2m4s       4m36s
-
-NAME                                    CLASS     HOSTS             ADDRESS         PORTS     AGE
-ingress.networking.k8s.io/awx-ingress   traefik   awx.example.com   192.168.0.221   80, 443   6m6s
-
-NAME                                  TYPE                DATA   AGE
-secret/redhat-operators-pull-secret   Opaque              1      7m33s
-secret/awx-admin-password             Opaque              1      6m48s
-secret/awx-postgres-configuration     Opaque              6      6m48s
-secret/awx-secret-tls                 kubernetes.io/tls   2      6m48s
-secret/awx-app-credentials            Opaque              3      6m9s
-secret/awx-secret-key                 Opaque              1      6m41s
-secret/awx-broadcast-websocket        Opaque              1      6m38s
-secret/awx-receptor-ca                kubernetes.io/tls   2      6m14s
-secret/awx-receptor-work-signing      Opaque              2      6m12s
 ```
 
 Now your AWX is available at `https://awx.example.com/` or the hostname you specified.
