@@ -13,7 +13,7 @@ spec:
 
   ingress_type: ingress
   ingress_hosts:
-    - hostname: awx.example.com
+    - hostname: awx.bravo.com.vn
       tls_secret: awx-secret-tls
 
   postgres_configuration_secret: awx-postgres-configuration
@@ -40,3 +40,37 @@ spec:
 
   # Uncomment to reveal "censored" logs
   #no_log: false
+  
+  ## add custom logos
+  extra_volumes: |
+    - name: logo-login
+      configMap:
+        defaultMode: 420
+        items:
+          - key: logo-login.svg
+            path: logo-login.svg
+        name: logo-login-configmap
+    - name: logo-header
+      configMap:
+        defaultMode: 420
+        items:
+          - key: logo-header.svg
+            path: logo-header.svg
+        name: logo-header-configmap
+    - name: favicon
+      configMap:
+        defaultMode: 420
+        items:
+          - key: favicon.ico
+            path: favicon.ico
+        name: favicon-configmap
+  web_extra_volume_mounts: |
+    - name: logo-login
+      mountPath: /var/lib/awx/public/static/media/logo-login.svg
+      subPath: logo-login.svg
+    - name: logo-header
+      mountPath: /var/lib/awx/public/static/media/logo-header.svg
+      subPath: logo-header.svg
+    - name: favicon
+      mountPath: /var/lib/awx/public/static/media/favicon.ico
+      subPath: favicon.ico
