@@ -1,6 +1,0 @@
-openssh-clients
-sshpass
-
-git-core
-findutils
-which

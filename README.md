@@ -1,7 +1,7 @@
 <!-- omit in toc -->
-# 📚 AWX on Single Node K3s
+# 📚 Ansible AWX on Kubernetes
 
-An example implementation of AWX on single node K3s using AWX Operator, with easy-to-use simplified configuration with ownership of data and passwords.
+An example implementation of Ansible AWX on Kubernetes using AWX Operator, with easy-to-use simplified configuration with ownership of data and passwords.
 
 - Accessible over HTTPS from remote host
 - All data will be stored under `/data`
@@ -11,33 +11,15 @@ An example implementation of AWX on single node K3s using AWX Operator, with eas
 **If you want to view the guide for the specific version of AWX Operator, switch the page to the desired tag instead of the `main` branch.**
 
 <!-- omit in toc -->
-## 📝 Table of Contents
-
-- [📝 Environment](#-environment)
-- [📝 References](#-references)
-- [📝 Requirements](#-requirements)
-- [📝 Deployment Instruction](#-deployment-instruction)
-  - [✅ Prepare CentOS Stream 9 host](#-prepare-centos-stream-9-host)
-  - [✅ Install K3s](#-install-k3s)
-  - [✅ Install AWX Operator](#-install-awx-operator)
-  - [✅ Prepare required files to deploy AWX](#-prepare-required-files-to-deploy-awx)
-  - [✅ Deploy AWX](#-deploy-awx)
-- [📝 Back up and Restore AWX using AWX Operator](#-back-up-and-restore-awx-using-awx-operator)
-- [📝 Additional Guides](#-additional-guides)
-
 ## 📝 Environment
 
 - Tested on:
-  - CentOS Stream 9 (Minimal)
-  - K3s v1.29.6+k3s2
-- Products that will be deployed:
   - AWX Operator 2.19.1
   - AWX 24.6.1
   - PostgreSQL 15
 
 ## 📝 References
 
-- [K3s - Lightweight Kubernetes](https://docs.k3s.io/)
 - [INSTALL.md on ansible/awx](https://github.com/ansible/awx/blob/24.6.1/INSTALL.md) @24.6.1
 - [README.md on ansible/awx-operator](https://github.com/ansible/awx-operator/blob/2.19.1/README.md) @2.19.1
 
@@ -50,52 +32,21 @@ An example implementation of AWX on single node K3s using AWX Operator, with eas
   - It's recommended to add more CPUs and RAM (like 4 CPUs and 8 GiB RAM or more) to avoid performance issue and job scheduling issue.
   - The files in this repository are configured to ignore resource requirements which specified by AWX Operator by default.
 - **Storage resources**
-  - At least **10 GiB for `/var/lib/rancher`** and **10 GiB for `/data`** are safe for fresh install.
-    - `/var/lib/rancher` will be created and consumed by K3s and related data like container images and overlayfs.
-    - `/data` will be created in this guide and used to store AWX-related databases and files.
-  - **Both will be grown during lifetime** and **actual consumption highly depends on your environment and your use case**, so you should to pay attention to the consumption and add more capacity if required.
+  - At least **10 GiB for `/data`** are safe for fresh install.
 
 ## 📝 Deployment Instruction
 
-### ✅ Prepare CentOS Stream 9 host
+### ✅ Install K8s
 
-Disable firewalld and nm-cloud-setup if enabled. This is [recommended by K3s](https://docs.k3s.io/installation/requirements?os=rhel#operating-systems).
-
-```bash
-# Disable firewalld
-sudo systemctl disable firewalld --now
-
-# Disable nm-cloud-setup if exists and enabled
-sudo systemctl disable nm-cloud-setup.service nm-cloud-setup.timer
-sudo reboot
-```
-
-Install the required packages to deploy AWX Operator and AWX.
-
-```bash
-sudo dnf install -y git curl
-```
-
-### ✅ Install K3s
-
-Install a specific version of K3s with `--write-kubeconfig-mode 644` to make the config file (`/etc/rancher/k3s/k3s.yaml`) readable by non-root users.
-
-<!-- shell: k3s: install -->
-```bash
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.29.6+k3s2 sh -s - --write-kubeconfig-mode 644
-```
+Install your own Kubernetes cluster
 
 ### ✅ Install AWX Operator
 
 Clone this repository and change directory.
 
-If you want to use files suitable for a specific version of AWX Operator, [refer to tags in this repository](https://github.com/kurokobo/awx-on-k3s/tags) and specify the desired tag in `git checkout`. Especially for `0.13.0` or earlier versions of AWX Operator, refer to [📝Tips: Deploy older version of AWX Operator](tips/deploy-older-operator.md).
-
 ```bash
-cd ~
-git clone https://github.com/kurokobo/awx-on-k3s.git
+git clone https://github.com/lucthienphong1120/ansible-automation-platform
 cd awx-on-k3s
-git checkout 2.19.1
 ```
 
 Then invoke `kubectl apply -k operator` to deploy AWX Operator.
@@ -124,8 +75,6 @@ replicaset.apps/awx-operator-controller-manager-68d787cfbd   1         1        
 ```
 
 ### ✅ Prepare required files to deploy AWX
-
-Generate a Self-Signed certificate. Note that an IP address can't be specified. If you want to use a certificate from a public ACME CA such as Let's Encrypt or ZeroSSL instead of a Self-Signed certificate, follow the guide on [📁 **Use SSL Certificate from Public ACME CA**](acme) first and come back to this step when done.
 
 <!-- shell: instance: generate certificates -->
 ```bash
@@ -257,54 +206,14 @@ Now your AWX is available at `https://awx.example.com/` or the hostname you spec
 
 Note that you have to access via the hostname that you specified in `base/awx.yaml`, instead of by IP address, since this guide uses Ingress. So you should configure your DNS or `hosts` file on your client where the browser is running.
 
-At this point, AWX can be accessed via HTTP as well as HTTPS. If you want to force users to use HTTPS, see [📝Tips: Enable HTTP Strict Transport Security (HSTS)](tips/enable-hsts.md).
-
 ## 📝 Back up and Restore AWX using AWX Operator
 
 The AWX Operator `0.10.0` or later has the ability to back up and restore AWX in easy way.
 
-Refer [📁 **Back up AWX using AWX Operator**](backup) and [📁 **Restore AWX using AWX Operator**](restore) for details.
-
-## 📝 Additional Guides
+Refer for details:
 
 - [📁 **Back up AWX using AWX Operator**](backup)
   - The guide to make backup of your AWX using AWX Operator.
   - This guide includes not only the way to make backup manually, but also an example simple playbook for Ansible, which can be use with scheduling feature on AWX.
 - [📁 **Restore AWX using AWX Operator**](restore)
   - The guide to restore your AWX using AWX Operator.
-- [📁 **Build and Use your own Execution Environment**](builder)
-  - The guide to use Ansible Builder to build our own Execution Environment.
-- [📁 **Deploy Private Git Repository on Kubernetes**](git)
-  - The guide to use AWX with SCM. This repository includes the manifests to deploy [Gitea](https://gitea.io/en-us/).
-- [📁 **Deploy Private Container Registry on Kubernetes**](registry)
-  - The guide to use Execution Environments in AWX (AWX-EE).
-  - If we want to use our own Execution Environment built with Ansible Builder and don't want to push it to the public container registry e.g. Docker Hub, we can deploy a private container registry on K3s.
-- [📁 **Integrate AWX with EDA Controller** (Experimental)](rulebooks)
-  - The guide to deploy and use Event Driven Ansible Controller (EDA Controller) with AWX on K3s.
-  - **Note that EDA Controller Operator that used in this guide is not a fully supported installation method for EDA Controller.**
-- [📁 **Deploy Private Galaxy NG on Kubernetes** (Experimental)](galaxy)
-  - The guide to deploy our own Galaxy NG instance.
-- [📁 **Use SSL Certificate from Public ACME CA**](acme)
-  - The guide to use a certificate from public ACME CA such as Let's Encrypt or ZeroSSL instead of Self-Signed certificate.
-- [📁 **Use Ansible Runner**](runner)
-  - The guide to use Ansible Runner to run playbook using Execution Environment.
-- [📁 **Use Customized Pod Specification for your Execution Environment**](containergroup)
-  - The guide to use customized Pod of the Execution Environment using **Container Group**.
-- [📁 **Enable Continuous Delivery (CD) for AWX using Argo CD**](argocd)
-  - The guide to deploy Argo CD and use it to enable continuous delivery for AWX.
-- [📁 **Tips**](tips)
-  - [📝Create "Manual" type project](tips/manual-project.md)
-  - [📝Deploy AWX using external PostgreSQL database](tips/external-db.md)
-  - [📝Trust custom Certificate Authority](tips/trust-custom-ca.md)
-  - [📝Expose `/etc/hosts` to Pods on K3s](tips/expose-hosts.md)
-  - [📝Enable HTTP Strict Transport Security (HSTS)](tips/enable-hsts.md)
-  - [📝Pass values from Secrets to `extra_settings`](tips/extra-settings.md)
-  - [📝Use HTTP proxy](tips/use-http-proxy.md)
-  - [📝Uninstall deployed resources](tips/uninstall.md)
-  - [📝Deploy older version of AWX Operator](tips/deploy-older-operator.md)
-  - [📝Upgrade AWX Operator and AWX](tips/upgrade-operator.md)
-  - [📝Workaround for the rate limit on Docker Hub](tips/dockerhub-rate-limit.md)
-  - [📝Version Mapping for AWX Operator and AWX](tips/version-mapping.md)
-  - [📝Use Kerberos authentication to connect to Windows hosts](tips/use-kerberos.md)
-  - [📝Use Helm or Operator Lifecycle Manager to manage AWX Operator and AWX](tips/alternative-methods.md)
-  - [📝Troubleshooting Guide](tips/troubleshooting.md)

@@ -13,7 +13,7 @@ spec:
 
   ingress_type: ingress
   ingress_hosts:
-    - hostname: awx.bravo.com.vn
+    - hostname: awx.example.com
       tls_secret: awx-secret-tls
 
   postgres_configuration_secret: awx-postgres-configuration
