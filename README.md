@@ -39,6 +39,8 @@ An example implementation of Ansible AWX on Kubernetes using AWX Operator, with 
 ### ✅ Install K8s
 
 Install your own Kubernetes cluster
++ Prepare default storageclass (for ex: [rancher/local-path-provisioner](https://github.com/rancher/local-path-provisioner))
++ Prepare default ingressclass (for ex: [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx))
 
 ### ✅ Install AWX Operator
 
@@ -79,7 +81,7 @@ replicaset.apps/awx-operator-controller-manager-68d787cfbd   1         1        
 <!-- shell: instance: generate certificates -->
 ```bash
 AWX_HOST="awx.example.com"
-openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -out ./base/tls.crt -keyout ./base/tls.key -subj "/CN=${AWX_HOST}/O=${AWX_HOST}" -addext "subjectAltName = DNS:${AWX_HOST}"
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -out ./base/cert.pem -keyout ./base/private.key -subj "/CN=${AWX_HOST}/O=${AWX_HOST}" -addext "subjectAltName = DNS:${AWX_HOST}"
 ```
 
 Modify `hostname` in `base/awx.yaml`.
