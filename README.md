@@ -62,18 +62,9 @@ The AWX Operator will be deployed to the namespace `awx`.
 
 <!-- shell: operator: get resources -->
 ```bash
-$ kubectl -n awx get all
+$ kubectl -n awx get pod
 NAME                                                   READY   STATUS    RESTARTS   AGE
 pod/awx-operator-controller-manager-68d787cfbd-kjfg7   2/2     Running   0          16s
-
-NAME                                                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
-service/awx-operator-controller-manager-metrics-service   ClusterIP   10.43.150.245   <none>        8443/TCP   16s
-
-NAME                                              READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/awx-operator-controller-manager   1/1     1            1           16s
-
-NAME                                                         DESIRED   CURRENT   READY   AGE
-replicaset.apps/awx-operator-controller-manager-68d787cfbd   1         1         1       16s
 ```
 
 ### ✅ Prepare required files to deploy AWX
@@ -84,7 +75,7 @@ AWX_HOST="awx.example.com"
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -out ./base/cert.pem -keyout ./base/private.key -subj "/CN=${AWX_HOST}/O=${AWX_HOST}" -addext "subjectAltName = DNS:${AWX_HOST}"
 ```
 
-Modify `hostname` in `base/awx.yaml`.
+Modify `hostname` in `base/awx.yaml` if you want to use Ingress.
 
 ```yaml
 ...
@@ -94,6 +85,29 @@ spec:
   ingress_hosts:
     - hostname: awx.example.com   👈👈👈
       tls_secret: awx-secret-tls
+...
+```
+
+Uncomment there sections if you want to use Loadbalancer or Nodeport instead of Ingress (Comment out Ingress section too!)
+
+```yaml
+...
+spec:
+  ...
+  service_type: NodePort
+  nodeport_port: 30080
+
+  # service_type: LoadBalancer
+  # loadbalancer_ip: '192.168.10.25'
+  # loadbalancer_protocol: https
+  # loadbalancer_port: 443
+  # loadbalancer_class: service.k8s.aws/nlb
+
+  #ingress_type: ingress
+  #ingress_class_name: nginx
+  #ingress_hosts:
+  #  - hostname: awx.example.com
+  #    tls_secret: awx-secret-tls
 ...
 ```
 
