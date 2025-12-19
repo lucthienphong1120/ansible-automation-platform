@@ -171,7 +171,7 @@ The required objects should now have been deployed next to AWX Operator in the `
 
 <!-- shell: instance: get resources -->
 ```bash
-$ kubectl -n awx get all
+$ kubectl -n awx get pod,svc,ingress
 
 NAME                                                  READY   STATUS      RESTARTS   AGE
 pod/awx-operator-controller-manager-59b86c6fb-4zz9r   2/2     Running     0          7m22s
@@ -185,21 +185,8 @@ service/awx-operator-controller-manager-metrics-service   ClusterIP   10.43.58.1
 service/awx-postgres-15                                   ClusterIP   None            <none>        5432/TCP   6m33s
 service/awx-service                                       ClusterIP   10.43.180.226   <none>        80/TCP     6m7s
 
-NAME                                              READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/awx-operator-controller-manager   1/1     1            1           7m33s
-deployment.apps/awx-web                           1/1     1            1           6m5s
-deployment.apps/awx-task                          1/1     1            1           6m4s
-
-NAME                                                        DESIRED   CURRENT   READY   AGE
-replicaset.apps/awx-operator-controller-manager-59b86c6fb   1         1         1       7m22s
-replicaset.apps/awx-web-549f7fdbc5                          1         1         1       6m5s
-replicaset.apps/awx-task-7d4fcdd449                         1         1         1       6m4s
-
-NAME                               READY   AGE
-statefulset.apps/awx-postgres-15   1/1     6m33s
-
-NAME                             COMPLETIONS   DURATION   AGE
-job.batch/awx-migration-24.6.1   1/1           2m4s       4m36s
+NAME                                    CLASS     HOSTS             ADDRESS         PORTS     AGE
+ingress.networking.k8s.io/awx-ingress   traefik   awx.example.com   192.168.0.221   80, 443   6m6s
 ```
 
 Now your AWX is available at `https://awx.example.com/` or the hostname you specified.
