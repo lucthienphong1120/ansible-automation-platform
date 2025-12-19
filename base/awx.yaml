@@ -12,7 +12,7 @@ spec:
   admin_password_secret: awx-admin-password
 
   service_type: NodePort
-  nodeport_port: 30080
+  nodeport_port: 30000
 
   # service_type: LoadBalancer
   # loadbalancer_ip: '192.168.10.25'

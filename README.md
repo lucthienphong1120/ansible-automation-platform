@@ -97,7 +97,7 @@ Instead of using Ingress, uncomment there sections if you want to use `Loadbalan
 spec:
   ...
   service_type: NodePort
-  nodeport_port: 30080
+  nodeport_port: 30000
 
   # service_type: LoadBalancer
   # loadbalancer_ip: '192.168.10.25'
@@ -191,9 +191,10 @@ NAME                                    CLASS     HOSTS             ADDRESS     
 ingress.networking.k8s.io/awx-ingress   traefik   awx.example.com   192.168.0.221   80, 443   6m6s
 ```
 
-Now your AWX is available at `https://awx.example.com/` or the hostname you specified.
-
-Note that you have to access via the hostname that you specified in `base/awx.yaml`, instead of by IP address, since this guide uses Ingress. So you should configure your DNS or `hosts` file on your client where the browser is running.
+Now your AWX is available as you specified:
++ Ingress: https://awx.example.com
++ NodePort: http://192.168.10.25:30000
++ LoadBalancer: https://192.168.10.25
 
 ## 📝 Back up and Restore AWX using AWX Operator
 
