@@ -122,13 +122,13 @@ Modify the two `password` entries in `base/kustomization.yaml`. Note that the `p
       - port=5432
       - database=awx
       - username=awx
-      - password=Ansible123!   👈👈👈
+      - password=password   👈👈👈
       - type=managed
 
   - name: awx-admin-password
     type: Opaque
     literals:
-      - password=Ansible123!   👈👈👈
+      - password=password   👈👈👈
 ...
 ```
 

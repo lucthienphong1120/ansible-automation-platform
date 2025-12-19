@@ -50,7 +50,11 @@ spec:
 
   # Uncomment to reveal "censored" logs
   #no_log: false
-  
+
+  extra_settings:
+    - setting: UI_NEXT
+      value: "True"
+
   ## add custom logos
   extra_volumes: |
     - name: logo-login
