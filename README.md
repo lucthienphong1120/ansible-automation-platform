@@ -8,7 +8,11 @@ An example implementation of Ansible AWX on Kubernetes using AWX Operator, with 
 - Fixed (configurable) passwords for AWX and PostgreSQL
 - Fixed (configurable) versions of AWX
 
-![screenshot](./screenshot.png)
+## 📸 Screenshot
+
+| Login                            | Home                           | Next UI                              |
+| -------------------------------- | ------------------------------ | ------------------------------------ |
+| ![login](./screenshot/login.png) | ![home](./screenshot/home.png) | ![next_ui](./screenshot/next_ui.png) |
 
 <!-- omit in toc -->
 ## 📝 Environment
