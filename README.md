@@ -17,10 +17,9 @@ An example implementation of Ansible AWX on Kubernetes using AWX Operator, with 
 <!-- omit in toc -->
 ## 📝 Environment
 
-- Tested on:
-  - AWX Operator 2.19.1
-  - AWX 24.6.1
-  - PostgreSQL 15
+- AWX Operator 2.19.1
+- AWX 24.6.1
+- PostgreSQL 15
 
 ## 📝 References
 
@@ -29,10 +28,9 @@ An example implementation of Ansible AWX on Kubernetes using AWX Operator, with 
 
 ## 📝 Requirements
 
-- **Computing resources**
-  - **2 CPUs minimum**.
-    - Both **AMD64** (x86_64) with x86-64-v2 support, and **ARM64**  (aarch64) are supported.
-  - **4 GiB RAM minimum**.
+- **2 CPUs minimum**.
+  - Both **AMD64** (x86_64) with x86-64-v2 support, and **ARM64**  (aarch64) are supported.
+- **4 GiB RAM minimum**.
   - It's recommended to add more CPUs and RAM (like 4 CPUs and 8 GiB RAM or more) to avoid performance issue and job scheduling issue.
   - The files in this repository are configured to ignore resource requirements which specified by AWX Operator by default.
 - **Storage resources**
@@ -40,11 +38,11 @@ An example implementation of Ansible AWX on Kubernetes using AWX Operator, with 
 
 ## 📝 Deployment Instruction
 
-### ✅ Install K8s
+### ✅ Prepare K8s infrastructure
 
-Install your own Kubernetes cluster
-+ Prepare default storageclass (for ex: [rancher/local-path-provisioner](https://github.com/rancher/local-path-provisioner))
-+ Prepare default ingressclass (for ex: [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx))
++ Install your own Kubernetes cluster
++ Setup default storageclass (Ex: [rancher/local-path-provisioner](https://github.com/rancher/local-path-provisioner))
++ Setup default ingressclass (Ex: [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx))
 
 ### ✅ Install AWX Operator
 
@@ -92,7 +90,7 @@ spec:
 ...
 ```
 
-Uncomment there sections if you want to use Loadbalancer or Nodeport instead of Ingress (Comment out Ingress section too!)
+Instead of using Ingress, uncomment there sections if you want to use `Loadbalancer` or `Nodeport` (Comment out Ingress section too!)
 
 ```yaml
 ...
