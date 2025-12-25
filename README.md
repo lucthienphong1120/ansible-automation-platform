@@ -43,6 +43,7 @@ An example implementation of Ansible AWX on Kubernetes using AWX Operator, with 
 + Install your own Kubernetes cluster
 + Setup default storageclass (Ex: [rancher/local-path-provisioner](https://github.com/rancher/local-path-provisioner))
 + Setup default ingressclass (Ex: [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx))
++ Setup loadbalancer IP pools (Ex: [metallb/metallb](https://github.com/metallb/metallb))
 
 ### ✅ Install AWX Operator
 
