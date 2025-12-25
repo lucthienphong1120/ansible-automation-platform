@@ -195,15 +195,3 @@ Now your AWX is available as you specified:
 + Ingress: https://awx.example.com
 + NodePort: http://192.168.10.25:30000
 + LoadBalancer: https://192.168.10.25
-
-## 📝 Back up and Restore AWX using AWX Operator
-
-The AWX Operator `0.10.0` or later has the ability to back up and restore AWX in easy way.
-
-Refer for details:
-
-- [📁 **Back up AWX using AWX Operator**](backup)
-  - The guide to make backup of your AWX using AWX Operator.
-  - This guide includes not only the way to make backup manually, but also an example simple playbook for Ansible, which can be use with scheduling feature on AWX.
-- [📁 **Restore AWX using AWX Operator**](restore)
-  - The guide to restore your AWX using AWX Operator.
