@@ -51,7 +51,7 @@ Clone this repository and change directory.
 
 ```bash
 git clone https://github.com/lucthienphong1120/ansible-automation-platform
-cd awx-on-k3s
+cd ansible-automation-platform
 ```
 
 Then invoke `kubectl apply -k operator` to deploy AWX Operator.
@@ -66,8 +66,8 @@ The AWX Operator will be deployed to the namespace `awx`.
 <!-- shell: operator: get resources -->
 ```bash
 $ kubectl -n awx get pod
-NAME                                                   READY   STATUS    RESTARTS   AGE
-pod/awx-operator-controller-manager-68d787cfbd-kjfg7   2/2     Running   0          16s
+NAME                                               READY   STATUS    RESTARTS   AGE
+awx-operator-controller-manager-68d787cfbd-kjfg7   2/2     Running   0          16s
 ```
 
 ### ✅ Prepare required files to deploy AWX
@@ -189,10 +189,11 @@ service/awx-postgres-15                                   ClusterIP   None      
 service/awx-service                                       ClusterIP   10.43.180.226   <none>        80/TCP     6m7s
 
 NAME                                    CLASS     HOSTS             ADDRESS         PORTS     AGE
-ingress.networking.k8s.io/awx-ingress   traefik   awx.example.com   192.168.0.221   80, 443   6m6s
+ingress.networking.k8s.io/awx-ingress   nginx     awx.example.com   192.168.10.25   80, 443   6m6s
 ```
 
 Now your AWX is available as you specified:
 + Ingress: https://awx.example.com
 + NodePort: http://192.168.10.25:30000
 + LoadBalancer: https://192.168.10.25
+
